@@ -1,2 +1,0 @@
-# DebtGo
-debt payoff tracker
