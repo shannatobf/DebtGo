@@ -7,98 +7,94 @@ function render() {
   const app = document.querySelector('#app')
   
   app.innerHTML = `
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
-      <div class="container mx-auto px-4 max-w-4xl">
-        <h1 class="text-4xl font-bold text-gray-900 mb-2 text-center">DebtGo</h1>
-        <p class="text-gray-600 text-center mb-8">Simple debt payoff calculator</p>
-        
-        <!-- Budget Input -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Monthly Budget for Debt</h2>
-          <div class="flex gap-4">
-            <input 
-              type="number" 
-              id="budget-input" 
-              placeholder="Enter monthly amount for debt payments" 
-              value="${budget || ''}"
-              class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-            <button id="set-budget" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold">
-              Set Budget
-            </button>
-          </div>
-          ${budget > 0 ? `<p class="text-green-600 mt-2">Budget: $${budget.toFixed(2)}/month</p>` : ''}
-        </div>
-        
+    <div class="min-h-screen py-12">
+      <div class="max-w-6xl mx-auto px-6">
+        <!-- HERO -->
+        <div class="grid gap-8 lg:grid-cols-2 items-center">
+          <div>
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight mb-4">DebtGo — Clear payoff plans, less interest</h1>
+            <p class="text-slate-600 mb-6 text-lg">Use the Avalanche method to prioritize high-interest debt and get to "debt-free" faster. Visual timelines, clear steps, and actionable insights.</p>
 
-        <!-- Add Debt -->
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 class="text-xl font-semibold text-gray-800 mb-4">Add Debt</h2>
-          <div class="grid md:grid-cols-2 gap-4 mb-4">
-            <input 
-              type="text" 
-              id="debt-name" 
-              placeholder="Debt name (e.g., Credit Card)" 
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-            <input 
-              type="number" 
-              id="debt-balance" 
-              placeholder="Balance" 
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-            <input 
-              type="number" 
-              id="debt-rate" 
-              placeholder="Interest rate (%)" 
-              step="0.01"
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-            <input 
-              type="number" 
-              id="debt-minimum" 
-              placeholder="Minimum payment" 
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-            <input
-              type="date"
-              id="debt-duedate"
-              placeholder="Due date (optional)"
-              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
-          </div>
-          <button id="add-debt" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold w-full">
-            Add Debt
-          </button>
-        </div>
-        
-        <!-- Debts List -->
-        ${debts.length > 0 ? `
-          <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Your Debts</h2>
-            <div class="space-y-3">
-              ${debts.map((debt, index) => `
-                <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <div class="flex-1">
-                    <h3 class="font-semibold text-gray-800">${debt.name}</h3>
-                    <p class="text-sm text-gray-600">
-                      Balance: $${debt.balance.toFixed(2)} | 
-                      Rate: ${debt.rate}% | 
-                      Min: $${debt.minimum.toFixed(2)} | 
-                      Due: ${debt.duedate ? debt.duedate : 'N/A'}
-                    </p>
-                  </div>
-                  <button onclick="removeDebt(${index})" class="text-red-600 hover:text-red-700 px-3 py-1">
-                    Remove
-                  </button>
-                </div>
-              `).join('')}
+            <div class="bg-white dg-shadow rounded-2xl p-6 w-full max-w-md">
+              <label for="budget-input" class="block text-sm font-medium text-slate-700 mb-2">Monthly budget for debt</label>
+              <div class="flex gap-3">
+                <input id="budget-input" type="number" inputmode="numeric" aria-label="Monthly budget" value="${budget || ''}" placeholder="e.g. 500" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                <button id="set-budget" class="inline-flex items-center px-4 py-3 bg-indigo-600 text-white rounded-lg font-semibold dg-transition hover:bg-indigo-700">Set</button>
+              </div>
+              ${budget > 0 ? `<p class="text-sm text-green-600 mt-3">Budget set to <strong>$${budget.toFixed(2)}/month</strong></p>` : `<p class="text-sm text-slate-500 mt-3">Set a monthly amount and add your debts to see a payoff plan.</p>`}
             </div>
           </div>
-        ` : ''}
-        
+
+          <div class="flex justify-center lg:justify-end">
+            <div class="w-full max-w-md">
+              <div class="rounded-2xl overflow-hidden dg-shadow dg-accent-bg text-white p-6">
+                <div class="text-sm opacity-90">DebtGo Snapshot</div>
+                <h3 class="text-2xl font-semibold mt-2">Payoff faster with Avalanche</h3>
+                <p class="mt-3 text-sm opacity-90">Pay minimums on all debts, then send extra money to the highest-interest balance first.</p>
+                <div class="mt-6 bg-white bg-opacity-10 rounded-xl p-4">
+                  <div class="text-xs opacity-90">Estimated time to debt-free</div>
+                  <div class="text-3xl font-bold mt-1">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MAIN CONTROLS -->
+        <div class="grid mt-10 gap-6 lg:grid-cols-2">
+          <div class="bg-white rounded-xl p-6 dg-shadow">
+            <h2 class="text-lg font-semibold mb-4">Add Debt</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label for="debt-name" class="block text-xs font-medium text-slate-600 mb-1">Name</label>
+                <input id="debt-name" type="text" placeholder="e.g. Credit Card" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300" />
+              </div>
+              <div>
+                <label for="debt-balance" class="block text-xs font-medium text-slate-600 mb-1">Balance</label>
+                <input id="debt-balance" type="number" placeholder="0.00" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300" />
+              </div>
+              <div>
+                <label for="debt-rate" class="block text-xs font-medium text-slate-600 mb-1">Interest rate (%)</label>
+                <input id="debt-rate" type="number" step="0.01" placeholder="e.g. 18.5" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300" />
+              </div>
+              <div>
+                <label for="debt-minimum" class="block text-xs font-medium text-slate-600 mb-1">Minimum payment</label>
+                <input id="debt-minimum" type="number" placeholder="0.00" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300" />
+              </div>
+              <div class="sm:col-span-2">
+                <label for="debt-duedate" class="block text-xs font-medium text-slate-600 mb-1">Due date (optional)</label>
+                <input id="debt-duedate" type="date" class="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300" />
+              </div>
+            </div>
+            <button id="add-debt" class="mt-4 w-full inline-flex justify-center items-center px-4 py-3 bg-emerald-600 text-white rounded-md font-semibold dg-transition hover:bg-emerald-700">Add Debt</button>
+          </div>
+
+          <div>
+            ${debts.length > 0 ? `
+              <div class="bg-white rounded-xl p-6 dg-shadow">
+                <h2 class="text-lg font-semibold mb-3">Your Debts</h2>
+                <div class="space-y-3">
+                  ${debts.map((debt, index) => `
+                    <div class="flex items-center justify-between p-3 border rounded-md">
+                      <div>
+                        <div class="font-semibold text-slate-800">${debt.name}</div>
+                        <div class="text-sm text-slate-500">Balance $${debt.balance.toFixed(2)} • ${debt.rate}% • Min $${debt.minimum.toFixed(2)}</div>
+                      </div>
+                      <div class="flex items-center gap-3">
+                        <button onclick="removeDebt(${index})" class="text-red-600 hover:text-red-700">Remove</button>
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : `
+              <div class="bg-white rounded-xl p-6 dg-shadow text-slate-600">No debts added yet — add one on the left to start.</div>
+            `}
+          </div>
+        </div>
+
         <!-- Results -->
-        <div id="results"></div>
+        <div id="results" class="mt-8"></div>
       </div>
     </div>
   `
