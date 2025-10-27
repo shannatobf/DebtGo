@@ -30,6 +30,7 @@ function render() {
           ${budget > 0 ? `<p class="text-green-600 mt-2">Budget: $${budget.toFixed(2)}/month</p>` : ''}
         </div>
         
+
         <!-- Add Debt -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h2 class="text-xl font-semibold text-gray-800 mb-4">Add Debt</h2>
@@ -59,6 +60,12 @@ function render() {
               placeholder="Minimum payment" 
               class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
+            <input
+              type="date"
+              id="debt-duedate"
+              placeholder="Due date (optional)"
+              class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
           </div>
           <button id="add-debt" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-semibold w-full">
             Add Debt
@@ -77,7 +84,8 @@ function render() {
                     <p class="text-sm text-gray-600">
                       Balance: $${debt.balance.toFixed(2)} | 
                       Rate: ${debt.rate}% | 
-                      Min: $${debt.minimum.toFixed(2)}
+                      Min: $${debt.minimum.toFixed(2)} | 
+                      Due: ${debt.duedate ? debt.duedate : 'N/A'}
                     </p>
                   </div>
                   <button onclick="removeDebt(${index})" class="text-red-600 hover:text-red-700 px-3 py-1">
@@ -113,12 +121,16 @@ function attachEventListeners() {
     const balance = parseFloat(document.getElementById('debt-balance').value)
     const rate = parseFloat(document.getElementById('debt-rate').value)
     const minimum = parseFloat(document.getElementById('debt-minimum').value)
+    const duedate = document.getElementById('debt-duedate').value
+
     
     if (name && balance > 0 && rate >= 0 && minimum > 0) {
-      debts.push({ name, balance, rate, minimum })
+      debts.push({ name, balance, rate, minimum, duedate })
       render()
     }
   })
+
+
 }
 
 window.removeDebt = function(index) {
@@ -246,7 +258,7 @@ function calculatePayoff() {
       </div>
       
       <p class="text-sm text-gray-600 mt-4">
-        💡 <strong>Strategy:</strong> Pay minimums on all debts, then put extra money toward the highest interest rate debt first.
+        💡 <strong>Avalanche Strategy:</strong> Pay minimums on all debts, then put extra money toward the highest interest rate debt first.
       </p>
     </div>
   `
