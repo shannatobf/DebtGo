@@ -81,6 +81,36 @@ DebtGo uses the **Debt Avalanche Method**, which is mathematically proven to sav
 3. Once that's paid off, roll that payment into the next highest interest rate debt
 4. Repeat until debt-free!
 
+Monthly Budget Input:
+
+Users can enter their monthly budget for debt payments
+The budget is validated against total minimum payments
+Debt Management:
+
+Users can add multiple debts with:
+Name
+Balance
+Interest rate
+Minimum payment
+Due date (optional)
+Debts can be removed individually
+Avalanche Method Calculation:
+
+Sorts debts by interest rate (highest to lowest)
+Ensures minimum payments are made on all debts
+Applies extra money to highest interest debt first
+Calculates:
+Time to debt-free (years and months)
+Total debt amount
+Total interest paid
+Shows payoff order with timeline for each debt
+UI Features:
+
+Clean, modern interface with Tailwind CSS
+Responsive design
+Visual feedback for budget status
+Clear presentation of results
+
 ## 🤝 Contributing
 
 Have ideas for new features? Feel free to open an issue or submit a pull request!
