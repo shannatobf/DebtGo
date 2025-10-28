@@ -1,4 +1,5 @@
 # DebtGo
+<img width="1224" height="642" alt="image" src="https://github.com/user-attachments/assets/14348ba5-879b-435d-8ee3-f150d1b44c79" />
 
 A simple and powerful debt payoff calculator built with Vite and Tailwind CSS. Calculate the fastest way to become debt-free using proven payoff strategies.
 
